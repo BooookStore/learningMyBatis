@@ -1,5 +1,6 @@
 package com.example.firstexample;
 
+import java.util.List;
 import java.util.Optional;
 
 interface BookMapper {
@@ -7,5 +8,7 @@ interface BookMapper {
     Optional<Book> selectBook(Long id);
 
     void insertBook(Book book);
+
+    List<Book> findByTitle(String title);
 
 }

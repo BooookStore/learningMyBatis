@@ -4,9 +4,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -15,8 +16,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class FirstExampleTest {
 
-    @Test
-    public void test() throws IOException {
+    private static SqlSession sqlSession;
+
+    @BeforeClass
+    public static void before() throws IOException {
         Properties properties = new Properties();
         properties.load(Resources.getResourceAsStream("mybatis.properties"));
 
@@ -25,7 +28,17 @@ public class FirstExampleTest {
                 properties
         );
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        sqlSession = sqlSessionFactory.openSession();
+    }
+
+    @AfterClass
+    public static void after() {
+        sqlSession.rollback();
+        sqlSession.close();
+    }
+
+    @Test
+    public void insertAndRetrieve() {
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
         bookMapper.insertBook(new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
         Optional<Book> findBook = bookMapper.selectBook(1L);
@@ -35,8 +48,18 @@ public class FirstExampleTest {
         assertEquals(1L, book.id());
         assertEquals("DomainDrivenDesign", book.title());
         assertEquals("12345", book.isbn().rawIsbn());
+    }
 
-        sqlSession.close();
+    @Test
+    public void insertAndFind() {
+        BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
+        bookMapper.insertBook(new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
+        bookMapper.insertBook(new Book(2L, "DomainDrivenDesign", new ISBN("12346")));
+
+        List<Book> books = bookMapper.findByTitle("DomainDrivenDesign");
+        assertEquals(2, books.size());
+        assertEquals(1L, books.get(0).id());
+        assertEquals(2L, books.get(1).id());
     }
 
 }

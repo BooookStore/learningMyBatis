@@ -12,6 +12,11 @@
         INSERT INTO BOOK (id, title, isbn)
         VALUES (#{id}, #{title}, #{isbn.rawIsbn})
     </insert>
+    <select id="findByTitle" resultMap="BookResultMap">
+        SELECT *
+        FROM BOOK
+        WHERE title = #{title}
+    </select>
 
     <!--
     Result Map for Book
