@@ -22,13 +22,16 @@ IDEから `./src/test/java/com/example/firstexample/FirstExampleTest.java` を�
 
 ## 各種ファイル
 
+テーブル定義
+- [/docker/mysql/initdb.d/02_CREATE_TABLE.sql](./docker/mysql/initdb.d/02_CREATE_TABLE.sql)
+
 設定ファイル
 
-- [./src/main/resources/mybatis-config.xml](./src/main/resources/mybatis-config.xml)
+- [/src/main/resources/mybatis-config.xml](./src/main/resources/mybatis-config.xml)
 
 マッパーXML
 
-- [./src/main/resources/mapper](./src/main/resources/mapper)
+- [/src/main/resources/mapper](./src/main/resources/mapper)
 
 ## 環境
 
