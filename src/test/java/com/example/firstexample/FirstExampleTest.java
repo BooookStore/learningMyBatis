@@ -19,7 +19,7 @@ public class FirstExampleTest {
     private static SqlSession sqlSession;
 
     @BeforeClass
-    public static void before() throws IOException {
+    public static void beforeClass() throws IOException {
         Properties properties = new Properties();
         properties.load(Resources.getResourceAsStream("mybatis.properties"));
 
@@ -31,16 +31,22 @@ public class FirstExampleTest {
         sqlSession = sqlSessionFactory.openSession();
     }
 
-    @AfterClass
-    public static void after() {
+    @After
+    public void after() {
         sqlSession.rollback();
+    }
+
+    @AfterClass
+    public static void afterClass() {
         sqlSession.close();
     }
 
     @Test
     public void insertAndRetrieve() {
+        LibraryMapper libraryMapper = sqlSession.getMapper(LibraryMapper.class);
+        libraryMapper.insertLibrary(new Library(1L, "Kawaguich"));
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
-        bookMapper.insertBook(new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
+        bookMapper.insertBook(1L, new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
         Optional<Book> findBook = bookMapper.selectBook(1L);
 
         Book book = findBook.orElse(null);
@@ -52,9 +58,11 @@ public class FirstExampleTest {
 
     @Test
     public void insertAndFind() {
+        LibraryMapper libraryMapper = sqlSession.getMapper(LibraryMapper.class);
+        libraryMapper.insertLibrary(new Library(1L, "Kawaguich"));
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
-        bookMapper.insertBook(new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
-        bookMapper.insertBook(new Book(2L, "DomainDrivenDesign", new ISBN("12346")));
+        bookMapper.insertBook(1L, new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
+        bookMapper.insertBook(1L, new Book(2L, "DomainDrivenDesign", new ISBN("12346")));
 
         List<Book> books = bookMapper.findByTitle("DomainDrivenDesign");
         assertEquals(2, books.size());

@@ -9,8 +9,8 @@
         WHERE id = #{id}
     </select>
     <insert id="insertBook" parameterType="com.example.firstexample.Book">
-        INSERT INTO BOOK (id, title, isbn)
-        VALUES (#{id}, #{title}, #{isbn.rawIsbn})
+        INSERT INTO BOOK (id, title, isbn, library_id)
+        VALUES (#{book.id}, #{book.title}, #{book.isbn.rawIsbn}, #{libraryId})
     </insert>
     <select id="findByTitle" resultMap="BookResultMap">
         SELECT *
