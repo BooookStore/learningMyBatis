@@ -4,6 +4,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.firstexample.LibraryMapper">
     <insert id="insertLibrary">
-        INSERT INTO LIBRARY(id, name) VALUES (#{id}, #{name});
+        INSERT INTO LIBRARY(id, name)
+        VALUES (#{id}, #{name})
     </insert>
+    <select id="findById" resultMap="libraryResultMap">
+        SELECT LIBRARY.id   AS library_id,
+               LIBRARY.name AS library_name,
+               BOOK.id      AS "book_id",
+               BOOK.title   AS "book_title",
+               BOOK.isbn    AS "book_isbn"
+        FROM LIBRARY
+                 INNER JOIN BOOK on LIBRARY.id = BOOK.library_id
+        WHERE LIBRARY.id = #{id}
+    </select>
+
+    <resultMap id="libraryResultMap" type="com.example.firstexample.Library">
+        <id column="library_id" javaType="_long"/>
+        <result column="library_name" javaType="String"/>
+        <collection property="books"
+                    ofType="com.example.firstexample.Book"
+                    resultMap="com.example.firstexample.BookMapper.BookResultMap"/>
+    </resultMap>
 </mapper>

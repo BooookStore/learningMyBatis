@@ -4,12 +4,13 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -42,9 +43,9 @@ public class FirstExampleTest {
     }
 
     @Test
-    public void insertAndRetrieve() {
+    public void bookInsertAndRetrieve() {
         LibraryMapper libraryMapper = sqlSession.getMapper(LibraryMapper.class);
-        libraryMapper.insertLibrary(new Library(1L, "Kawaguich"));
+        libraryMapper.insertLibrary(new Library(1L, "Kawaguich", new ArrayList<>()));
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
         bookMapper.insertBook(1L, new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
         Optional<Book> findBook = bookMapper.selectBook(1L);
@@ -57,9 +58,9 @@ public class FirstExampleTest {
     }
 
     @Test
-    public void insertAndFind() {
+    public void bookInsertAndFind() {
         LibraryMapper libraryMapper = sqlSession.getMapper(LibraryMapper.class);
-        libraryMapper.insertLibrary(new Library(1L, "Kawaguich"));
+        libraryMapper.insertLibrary(new Library(1L, "Kawaguich", new ArrayList<>()));
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
         bookMapper.insertBook(1L, new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
         bookMapper.insertBook(1L, new Book(2L, "DomainDrivenDesign", new ISBN("12346")));
@@ -68,6 +69,27 @@ public class FirstExampleTest {
         assertEquals(2, books.size());
         assertEquals(1L, books.get(0).id());
         assertEquals(2L, books.get(1).id());
+    }
+
+    @Test
+    public void libraryInsertAndFind() {
+        Library library = new Library(1L, "Kawaguich", new ArrayList<>(Arrays.asList(
+                new Book(1L, "A", new ISBN("12345")),
+                new Book(2L, "B", new ISBN("12345")),
+                new Book(3L, "C", new ISBN("12345"))
+        )));
+
+        LibraryMapper libraryMapper = sqlSession.getMapper(LibraryMapper.class);
+        BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
+
+        libraryMapper.insertLibrary(library);
+        library.books().forEach(book -> bookMapper.insertBook(library.id(), book));
+
+        Optional<Library> findLibrary = libraryMapper.findById(1L);
+        Library notNullLibrary = findLibrary.orElse(null);
+        assertNotNull(notNullLibrary);
+        assertEquals(3, notNullLibrary.books().size());
+        assertEquals(1L, notNullLibrary.books().get(0).id());
     }
 
 }
