@@ -32,6 +32,6 @@ IDEから `./src/test/java/com/example/firstexample/FirstExampleTest.java` を�
 
 ## 環境
 
-Java ... 1.8 (jdk1.8.0_191)
-IDE ... IntelliJ IDEA 2019.2.1
-Plugins ... [Free MyBatis plugin](https://github.com/rockjava/intellij-mybatis-plugin)
+- Java ... 1.8 (jdk1.8.0_191)
+- IDE ... IntelliJ IDEA 2019.2.1
+- Plugins ... [Free MyBatis plugin](https://github.com/rockjava/intellij-mybatis-plugin)
