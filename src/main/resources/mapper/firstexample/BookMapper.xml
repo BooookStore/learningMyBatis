@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.firstexample.BookMapper">
+    <select id="selectBook" resultMap="BookResultMap">
+        SELECT *
+        FROM BOOK
+        WHERE id = #{id}
+    </select>
+    <insert id="insertBook" parameterType="com.example.firstexample.Book">
+        INSERT INTO BOOK (id, title, isbn)
+        VALUES (#{id}, #{title}, #{isbn.rawIsbn})
+    </insert>
+
+    <!--
+    Result Map for Book
+
+    require columns id, title, isbn
+     -->
+    <resultMap id="BookResultMap" type="com.example.firstexample.Book">
+        <constructor>
+            <idArg column="id" javaType="_long"/>
+            <arg column="title" javaType="String"/>
+            <arg column="isbn" javaType="com.example.firstexample.ISBN" resultMap="IsbnResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="IsbnResultMap" type="com.example.firstexample.ISBN">
+        <constructor>
+            <arg column="isbn" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>
