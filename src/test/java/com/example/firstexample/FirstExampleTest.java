@@ -12,8 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class FirstExampleTest {
 
@@ -90,6 +89,9 @@ public class FirstExampleTest {
         assertNotNull(notNullLibrary);
         assertEquals(3, notNullLibrary.books().size());
         assertEquals(1L, notNullLibrary.books().get(0).id());
+
+        Optional<Library> nullLibrary = libraryMapper.findById(2L);
+        assertNull(nullLibrary.orElse(null));
     }
 
 }

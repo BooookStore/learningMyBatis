@@ -10,10 +10,6 @@ public class Library {
 
     private List<Book> books;
 
-    @Deprecated
-    public Library() {
-    }
-
     public Library(long id, String name, List<Book> books) {
         this.id = id;
         this.name = name;
@@ -31,4 +27,9 @@ public class Library {
     public List<Book> books() {
         return books;
     }
+
+    @Deprecated
+    public Library() {
+    }
+
 }
