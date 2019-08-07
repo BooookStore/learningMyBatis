@@ -7,10 +7,10 @@ import java.util.Optional;
 
 interface BookMapper {
 
-    Optional<Book> selectBook(Long id);
-
-    void insertBook(@Param("libraryId") Long libraryId, @Param("book") Book book);
+    Optional<Book> findById(Long id);
 
     List<Book> findByTitle(String title);
+
+    void insertBook(@Param("libraryId") Long libraryId, @Param("book") Book book);
 
 }

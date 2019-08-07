@@ -3,17 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.firstexample.BookMapper">
-    <select id="selectBook" resultMap="BookResultMap">
+    <select id="findById" resultMap="BookResultMap">
         SELECT id    AS "book_id",
                title AS "book_title",
                isbn  AS "book_isbn"
         FROM BOOK
         WHERE id = #{id}
     </select>
-    <insert id="insertBook" parameterType="com.example.firstexample.Book">
-        INSERT INTO BOOK (id, title, isbn, library_id)
-        VALUES (#{book.id}, #{book.title}, #{book.isbn.rawIsbn}, #{libraryId})
-    </insert>
     <select id="findByTitle" resultMap="BookResultMap">
         SELECT id    AS "book_id",
                title AS "book_title",
@@ -21,6 +17,10 @@
         FROM BOOK
         WHERE title = #{title}
     </select>
+    <insert id="insertBook" parameterType="com.example.firstexample.Book">
+        INSERT INTO BOOK (id, title, isbn, library_id)
+        VALUES (#{book.id}, #{book.title}, #{book.isbn.rawIsbn}, #{libraryId})
+    </insert>
 
     <!--
     Result Map for Book

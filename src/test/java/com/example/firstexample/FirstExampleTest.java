@@ -47,7 +47,7 @@ public class FirstExampleTest {
         libraryMapper.insertLibrary(new Library(1L, "Kawaguich", new ArrayList<>()));
         BookMapper bookMapper = sqlSession.getMapper(BookMapper.class);
         bookMapper.insertBook(1L, new Book(1L, "DomainDrivenDesign", new ISBN("12345")));
-        Optional<Book> findBook = bookMapper.selectBook(1L);
+        Optional<Book> findBook = bookMapper.findById(1L);
 
         Book book = findBook.orElse(null);
         assertNotNull(book);
